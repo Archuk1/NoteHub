@@ -20,6 +20,7 @@ export default function SignIn(){
         const user = await getMe();
         setUser(user)
         router.push('/profile');
+        router.refresh();
       }
     } catch {
       setError('Invalid email or password');

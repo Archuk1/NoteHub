@@ -1,6 +1,6 @@
-// lib/store/authStore.ts
 import { User } from "@/types/user";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 type AuthState = {
   user: User | null;
@@ -9,19 +9,26 @@ type AuthState = {
   clearIsAuthenticated: () => void;
 };
 
-export const useAuthStore = create<AuthState>()((set) => ({
-  user: null,
-  isAuthenticated: false,
-
-  setUser: (user) =>
-    set({
-      user,
-      isAuthenticated: true,
-    }),
-
-  clearIsAuthenticated: () =>
-    set({
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
       user: null,
       isAuthenticated: false,
+
+      setUser: (user) =>
+        set({
+          user,
+          isAuthenticated: true,
+        }),
+
+      clearIsAuthenticated: () =>
+        set({
+          user: null,
+          isAuthenticated: false,
+        }),
     }),
-}));
+    {
+      name: "auth-storage", // ключ в localStorage
+    }
+  )
+);
