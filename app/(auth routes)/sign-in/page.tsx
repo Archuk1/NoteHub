@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation'
 import css from './SingInPage.module.css'
 import { useState } from 'react';
-import { login, LoginRequest } from '@/lib/api/clientApi';
+import { getMe, login, LoginRequest } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 
 
@@ -17,7 +17,8 @@ export default function SignIn(){
       const res = await login(formValues);
 
       if (res) {
-        setUser(res)
+        const user = await getMe();
+        setUser(user)
         router.push('/profile');
       }
     } catch {
