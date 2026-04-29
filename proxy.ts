@@ -4,7 +4,7 @@ import { checkServerSession } from './lib/api/serverApi';
 const privateRoutes = ['/profile', '/notes', '/notes/filter'];
 const publicRoutes = ['/sign-in', '/sign-up'];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const accessToken = request.cookies.get('accessToken')?.value;
   const refreshToken = request.cookies.get('refreshToken')?.value;
@@ -24,7 +24,6 @@ export async function middleware(request: NextRequest) {
             ? NextResponse.redirect(new URL('/', request.url))
             : NextResponse.next();
 
-          // встановлюємо куки в response щоб браузер їх отримав
           const accessValue = newAccessToken.split(';')[0].split('=')[1];
           const refreshValue = newRefreshToken?.split(';')[0].split('=')[1];
 
@@ -36,7 +35,7 @@ export async function middleware(request: NextRequest) {
           return response;
         }
       } catch {
-        // refresh failed
+
       }
     }
 
