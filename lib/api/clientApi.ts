@@ -78,16 +78,17 @@ export const checkSession = async () => {
   return res.data;
 };
 
-export const getMe = async () => {
-  const { data } = await nextServer.get<User>("/users/me");
-  return data;
-};
 
 export type UpdateUserRequest = {
   username: string;
 };
 
+export const getMe = async () => {
+  const { data } = await internalApi.get<User>("/api/users/me");
+  return data;
+};
+
 export const updateMe = async (data: UpdateUserRequest) => {
-  const res = await nextServer.patch<User>("/users/me", data);
+  const res = await internalApi.patch<User>("/api/users/me", data);
   return res.data;
 };
