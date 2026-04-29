@@ -29,37 +29,33 @@ const AuthProvider = ({ children }: Props) => {
     const verifySession = async () => {
       try {
         setIsLoading(true);
+        console.log("🔍 Verifying session, pathname:", pathname);
+        
         const sessionValid = await checkSession();
+        console.log("✅ Session valid:", sessionValid);
 
         if (sessionValid) {
           const user = await getMe();
+          console.log("👤 User:", user);
+          
           if (user) {
             setUser(user);
           } else {
             clearIsAuthenticated();
-            if (isPrivateRoute(pathname)) {
-              router.push("/notes");
-            }
           }
         } else {
           clearIsAuthenticated();
-          if (isPrivateRoute(pathname)) {
-            router.push("/notes");
-          }
         }
       } catch (error) {
-        console.error("Session verification failed:", error);
+        console.error("❌ Session verification failed:", error);
         clearIsAuthenticated();
-        if (isPrivateRoute(pathname)) {
-          router.push("/notes");
-        }
       } finally {
         setIsLoading(false);
       }
     };
 
     verifySession();
-  }, [setUser, clearIsAuthenticated, pathname, router]);
+  }, []);
 
   if (isLoading) {
     return (
