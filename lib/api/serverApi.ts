@@ -17,17 +17,17 @@ interface FetchNotesResponse {
   totalPages: number;
 }
 
-
 export const checkServerSession = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
-  const res = await nextServer.get<{ success: boolean }>("/auth/session", {
+  const res = await nextServer.get("/auth/session", {
     headers: {
       Cookie: cookieStore.toString(),
     },
   });
 
-  return res;
+  // повертаємо Set-Cookie хедери з відповіді
+  return res.headers["set-cookie"];
 };
 
 
