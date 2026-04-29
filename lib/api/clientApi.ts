@@ -1,5 +1,5 @@
 import { Note, NoteTag } from "@/types/note";
-import { nextServer } from "./api";
+import { internalApi, nextServer } from "./api";
 import { User} from "@/types/user";
 
 interface FetchNotesParams {
@@ -54,28 +54,27 @@ export type RegisterRequest = {
   password: string;
 };
 
-export const register = async (data: RegisterRequest) => {
-  const res = await nextServer.post<User>("/api/auth/register", data);
-  return res.data;
-};
-
 export type LoginRequest = {
   email: string;
   password: string;
 };
 
+export const register = async (data: RegisterRequest) => {
+  const res = await internalApi.post<User>("/api/auth/register", data);
+  return res.data;
+};
+
 export const login = async (data: LoginRequest) => {
-  const res = await nextServer.post<User>("/api/auth/login", data);
+  const res = await internalApi.post<User>("/api/auth/login", data);
   return res.data;
 };
 
 export const logout = async (): Promise<void> => {
-  await nextServer.post("/api/auth/logout");
+  await internalApi.post("/api/auth/logout");
 };
 
-
 export const checkSession = async () => {
-  const res = await nextServer.get("/api/auth/session");
+  const res = await internalApi.get("/api/auth/session");
   return res.data;
 };
 
