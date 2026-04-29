@@ -38,7 +38,7 @@ const AuthProvider = ({ children }: Props) => {
           } else {
             clearIsAuthenticated();
             if (isPrivateRoute(pathname)) {
-              router.push("/sign-in");
+              router.push("/notes");
             }
           }
         } else {
