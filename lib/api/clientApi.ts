@@ -73,13 +73,10 @@ export const logout = async (): Promise<void> => {
   await api.post("/auth/logout");
 };
 
-type CheckSessionRequest = {
-  success: boolean;
-};
 
 export const checkSession = async () => {
-  const res = await api.get<CheckSessionRequest>("/auth/session");
-  return res.data.success;
+  const res = await api.get("/auth/session");
+  return res.data;
 };
 
 export const getMe = async () => {
