@@ -1,5 +1,5 @@
 import { Note, NoteTag } from "@/types/note";
-import { api } from "./api";
+import { nextServer } from "./api";
 import { User} from "@/types/user";
 
 interface FetchNotesParams {
@@ -15,7 +15,7 @@ interface FetchNotesResponse{
 }
 
 export async function fetchNotes({search = '',page= 1,perPage = 12, tag}: FetchNotesParams): Promise<FetchNotesResponse> {
-    const response = await api.get<FetchNotesResponse>('/notes', {
+    const response = await nextServer.get<FetchNotesResponse>('/notes', {
         params:{
             search: search,
             page: page,
@@ -27,7 +27,7 @@ export async function fetchNotes({search = '',page= 1,perPage = 12, tag}: FetchN
 }
 
 export async function fetchNoteById (noteId: string) {
-    const response = await api.get<Note>(`/notes/${noteId}`);
+    const response = await nextServer.get<Note>(`/notes/${noteId}`);
     return response.data
 }
 
@@ -39,12 +39,12 @@ interface CreateNoteParams {
 
 export async function createNote (noteData : CreateNoteParams ) {
     
-    const response = await api.post<Note>('/notes', noteData)
+    const response = await nextServer.post<Note>('/notes', noteData)
     return response.data;
 }
 
 export async function deleteNote (noteId: string) {
-    const response = await api.delete<Note>(`/notes/${noteId}`);
+    const response = await nextServer.delete<Note>(`/notes/${noteId}`);
     return response.data
 }
 
@@ -55,7 +55,7 @@ export type RegisterRequest = {
 };
 
 export const register = async (data: RegisterRequest) => {
-  const res = await api.post<User>("/auth/register", data);
+  const res = await nextServer.post<User>("/auth/register", data);
   return res.data;
 };
 
@@ -65,22 +65,22 @@ export type LoginRequest = {
 };
 
 export const login = async (data: LoginRequest) => {
-  const res = await api.post<User>("/auth/login", data);
+  const res = await nextServer.post<User>("/auth/login", data);
   return res.data;
 };
 
 export const logout = async (): Promise<void> => {
-  await api.post("/auth/logout");
+  await nextServer.post("/auth/logout");
 };
 
 
 export const checkSession = async () => {
-  const res = await api.get("/auth/session");
+  const res = await nextServer.get("/auth/session");
   return res.data;
 };
 
 export const getMe = async () => {
-  const { data } = await api.get<User>("/users/me");
+  const { data } = await nextServer.get<User>("/users/me");
   return data;
 };
 
@@ -89,6 +89,6 @@ export type UpdateUserRequest = {
 };
 
 export const updateMe = async (data: UpdateUserRequest) => {
-  const res = await api.patch<User>("/users/me", data);
+  const res = await nextServer.patch<User>("/users/me", data);
   return res.data;
 };
