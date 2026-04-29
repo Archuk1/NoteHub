@@ -18,9 +18,7 @@ const AuthProvider = ({ children }: Props) => {
   const [isLoading, setIsLoading] = useState(true);
   const setUser = useAuthStore((state) => state.setUser);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const clearIsAuthenticated = useAuthStore(
-    (state) => state.clearIsAuthenticated
-  );
+  const clearIsAuthenticated = useAuthStore((state) => state.clearIsAuthenticated);
 
   const pathname = usePathname();
   const router = useRouter();
@@ -29,15 +27,10 @@ const AuthProvider = ({ children }: Props) => {
     const verifySession = async () => {
       try {
         setIsLoading(true);
-        console.log("🔍 Verifying session, pathname:", pathname);
-        
         const sessionValid = await checkSession();
-        console.log("✅ Session valid:", sessionValid);
 
         if (sessionValid) {
           const user = await getMe();
-          console.log("👤 User:", user);
-          
           if (user) {
             setUser(user);
           } else {
@@ -47,7 +40,7 @@ const AuthProvider = ({ children }: Props) => {
           clearIsAuthenticated();
         }
       } catch (error) {
-        console.error("❌ Session verification failed:", error);
+        console.error("Session verification failed:", error);
         clearIsAuthenticated();
       } finally {
         setIsLoading(false);
@@ -56,6 +49,12 @@ const AuthProvider = ({ children }: Props) => {
 
     verifySession();
   }, []);
+
+  useEffect(() => {
+    if (!isLoading && isPrivateRoute(pathname) && !isAuthenticated) {
+      router.push("/sign-in");
+    }
+  }, [isLoading, isAuthenticated, pathname, router]);
 
   if (isLoading) {
     return (
