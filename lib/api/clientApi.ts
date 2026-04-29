@@ -1,6 +1,6 @@
 import { Note, NoteTag } from "@/types/note";
 import { api } from "./api";
-import { User } from "@/types/user";
+import { User} from "@/types/user";
 
 interface FetchNotesParams {
     search: string,
@@ -52,7 +52,6 @@ export async function deleteNote (noteId: string) {
 export type RegisterRequest = {
   email: string;
   password: string;
-  username: string;
 };
 
 export const register = async (data: RegisterRequest) => {
