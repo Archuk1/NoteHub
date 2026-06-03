@@ -90,6 +90,3 @@ The project is deployed on [Vercel](https://vercel.com). To deploy your own inst
 2. Import the repository on [vercel.com](https://vercel.com)
 3. Vercel will automatically detect Next.js and deploy
 
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
